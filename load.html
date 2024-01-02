@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--dependencies-->
+    <script crossorigin src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
+    <!--library-->
+    <script src="js/docx-preview.js"></script>
+</head>
+
+<body>
+    <input id="files" type="file" id="files" accept=".docx" />
+    <button id="loadButton">load</button>
+    <div id="viewer"></div>
+
+    <script>
+        document.getElementById("loadButton").addEventListener("click", loadDocx);
+
+        function loadDocx() {
+            var file = document.getElementById("files").files[0];
+            var container = document.getElementById("viewer");
+
+            docx.renderAsync(file, container, null, {
+                debug: true,
+                experimental: true
+            }).then(function (x) { console.log(x); });
+        }
+    </script>
+</body>
+
+</html>

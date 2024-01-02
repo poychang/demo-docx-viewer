@@ -12,22 +12,28 @@
 </head>
 
 <body>
-    <input id="files" type="file" id="files" accept=".docx" />
-    <button id="loadButton">load</button>
-    <div id="viewer"></div>
+    <div id="viewer" style="max-height: 500px; overflow: auto;"></div>
 
     <script>
-        document.getElementById("loadButton").addEventListener("click", loadDocx);
+        const url = './test.docx';
 
-        function loadDocx() {
-            var file = document.getElementById("files").files[0];
-            var container = document.getElementById("viewer");
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const file = new File([blob], 'viewer.docx', { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
-            docx.renderAsync(file, container, null, {
-                debug: true,
-                experimental: true
-            }).then(function (x) { console.log(x); });
-        }
+                docx.renderAsync(file, document.getElementById("viewer"))
+                    .then(x => console.log("docx: finished"));
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+
     </script>
 </body>
 
